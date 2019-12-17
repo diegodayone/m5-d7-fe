@@ -1,26 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+class App extends React.Component {
+  state = {
+    books: []
+  }
+
+  render() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Books in the catalogue</h1>
+        {this.state.books.map((book, index) => 
+          <div key={index}>
+            <img src={book.img} style={{ width:"200px"}}></img>
+            <span>{book.title}</span>
+          </div>)}
       </header>
     </div>
   );
+  }
+
+  componentDidMount = async () => {
+    const resp = await fetch("https://m5-d7-oct19.herokuapp.com/books")
+    const jsonBooks = await resp.json();
+
+    this.setState({
+      books: jsonBooks
+    })
+  }
 }
 
 export default App;
